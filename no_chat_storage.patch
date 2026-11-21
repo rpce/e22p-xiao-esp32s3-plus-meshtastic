@@ -1,0 +1,17 @@
+diff --git a/src/mesh/MeshService.cpp b/src/mesh/MeshService.cpp
+--- a/src/mesh/MeshService.cpp
++++ b/src/mesh/MeshService.cpp
+@@ -114,6 +114,13 @@ int MeshService::handleFromRadio(const meshtastic_MeshPacket *mp)
+         }
+     }
+ 
++    if (owner.is_unmessagable &&
++        mp->which_payload_variant == meshtastic_MeshPacket_decoded_tag &&
++        mp->decoded.portnum == meshtastic_PortNum_TEXT_MESSAGE_APP) {
++        LOG_DEBUG("Unmessagable: pomijam lokalny zapis tekstu od 0x%08x", mp->from);
++        return 0;
++    }
++
+     // Our own packet heard back off the mesh, which the duplicate cache only suppresses best-effort.
+     // Clients can't tell an echo from genuine ingress, so it surfaces as an incoming message. Packets
+     // addressed to us are locally-generated feedback (implicit ACK, NAK, routing error), not an echo.

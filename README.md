@@ -12,7 +12,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 ## Dokumentacja
 
 Pełna instrukcja montażu ze zdjęciami, tabelą połączeń, pomiarami mocy i noise floor oraz uwagami do montażu na maszcie:
-**[Montaż E22P-868M30S + XIAO ESP32-S3 Plus (Meshtastic).pdf](Montaż E22P-868M30S + XIAO ESP32-S3 Plus (Meshtastic).pdf)**
+Montaż E22P-868M30S + XIAO ESP32-S3 Plus (Meshtastic).pdf
 
 ## Zawartość repozytorium
 

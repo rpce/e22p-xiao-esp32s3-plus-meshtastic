@@ -20,6 +20,7 @@ Montaż E22P-868M30S + XIAO ESP32-S3 Plus (Meshtastic).pdf
 |---|---|
 | `e22p_xiao_s3_plus_variant.patch` | wariant: `variant.h`, `pins_arduino.h`, `platformio.ini` |
 | `no_chat_storage.patch` | opcjonalny: przy *unmessagable* node przekazuje tekst dalej, ale go nie zapisuje |
+| `e22p_xiao_s3_plus_variant_en8s.patch` | opcjonalny: opóźnienie 8s dla EN - NIE wolno aplikować z patchem e22p_xiao_s3_plus_variant.patch jest zamienny |
 | `Montaz_E22P-868M30S_XIAO-ESP32-S3-Plus.pdf` | instrukcja montażu |
 
 ## Szybki start

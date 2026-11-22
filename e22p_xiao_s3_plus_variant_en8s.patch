@@ -1,0 +1,105 @@
+diff --git a/src/platform/extra_variants/e22p_xiao_s3_plus/variant.cpp b/src/platform/extra_variants/e22p_xiao_s3_plus/variant.cpp
+new file mode 100644
+index 0000000..2fd9993
+--- /dev/null
++++ b/src/platform/extra_variants/e22p_xiao_s3_plus/variant.cpp
+@@ -0,0 +1,15 @@
++#include "configuration.h"
++
++#if defined(E22P_XIAO_S3_PLUS)
++
++// E22P-868M30S: EN = LNA_EN + RF switch EN.
++// Przed startem trzyma go LOW rezystor 10k do GND.
++void lateInitVariant()
++{
++    pinMode(E22P_EN, OUTPUT);
++    digitalWrite(E22P_EN, LOW);
++    delay(8000);                   // okno jak w restarterze Bikemana
++    digitalWrite(E22P_EN, HIGH);   // EN stale w stanie wysokim
++}
++
++#endif
+diff --git a/variants/esp32s3/e22p_xiao_s3_plus/pins_arduino.h b/variants/esp32s3/e22p_xiao_s3_plus/pins_arduino.h
+new file mode 100644
+index 0000000..f8262b7
+--- /dev/null
++++ b/variants/esp32s3/e22p_xiao_s3_plus/pins_arduino.h
+@@ -0,0 +1,17 @@
++#ifndef Pins_Arduino_h
++#define Pins_Arduino_h
++
++#include <stdint.h>
++
++#define USB_VID 0x2886
++#define USB_PID 0x0059
++
++static const uint8_t SDA = 5;
++static const uint8_t SCL = 6;
++
++static const uint8_t MISO = 8;
++static const uint8_t SCK = 7;
++static const uint8_t MOSI = 9;
++static const uint8_t SS = 3;
++
++#endif /* Pins_Arduino_h */
+diff --git a/variants/esp32s3/e22p_xiao_s3_plus/platformio.ini b/variants/esp32s3/e22p_xiao_s3_plus/platformio.ini
+new file mode 100644
+index 0000000..6ba1c87
+--- /dev/null
++++ b/variants/esp32s3/e22p_xiao_s3_plus/platformio.ini
+@@ -0,0 +1,13 @@
++[env:E22P-868M30S_XIAO-ESP32S3-PLUS_DIV]
++extends = esp32s3_base
++board_level = extra
++board = seeed-xiao-s3
++board_build.partitions = default_8MB.csv
++upload_protocol = esptool
++upload_speed = 921600
++build_flags =
++  ${esp32s3_base.build_flags}
++  -D PRIVATE_HW
++  -D E22P_XIAO_S3_PLUS
++  -I variants/esp32s3/e22p_xiao_s3_plus
++  -DBOARD_HAS_PSRAM
+diff --git a/variants/esp32s3/e22p_xiao_s3_plus/variant.h b/variants/esp32s3/e22p_xiao_s3_plus/variant.h
+new file mode 100644
+index 0000000..cbb4e6a
+--- /dev/null
++++ b/variants/esp32s3/e22p_xiao_s3_plus/variant.h
+@@ -0,0 +1,36 @@
++#pragma once
++// E22P-868M30S_XIAO-ESP32S3-PLUS_DIV
++// XIAO ESP32-S3 Plus + Ebyte E22P-868M30S (adapter Bikeman E22/RA62 v.2)
++
++#define LED_POWER 21
++#define LED_STATE_ON 0
++
++#define BUTTON_PIN 0
++#define BUTTON_NEED_PULLUP
++
++#define I2C_SDA 5
++#define I2C_SCL 6
++
++#define USE_SX1262
++#define LORA_SCK   7
++#define LORA_MISO  8
++#define LORA_MOSI  9
++#define LORA_CS    3
++#define LORA_RESET 1
++#define LORA_DIO1  2
++
++#define SX126X_CS    LORA_CS
++#define SX126X_DIO1  LORA_DIO1
++#define SX126X_BUSY  44
++#define SX126X_RESET LORA_RESET
++
++#define SX126X_DIO2_AS_RF_SWITCH
++#define SX126X_DIO3_TCXO_VOLTAGE 1.8
++
++#define E22P_EN 4   // E22P EN (LNA + RF switch), sterowany w variant.cpp (okno 8 s)
++
++// E22P-868M30S: krzywa wzmocnienia PA wg pomiarow (indeks = moc SX1262 1..22 dBm)
++// zrodlo: reddit r/meshtastic, zp4lb, pomiary E22P-868M30S
++#define NUM_PA_POINTS 22
++#define TX_GAIN_LORA 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 18, 18, 17, 16, 15, 14, 14, 13, 12, 11, 10, 9
++#define SX126X_MAX_POWER 16
